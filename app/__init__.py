@@ -1,30 +1,27 @@
-import logging
-import sys
-# from flask_bootstrap import Bootstrap
 from logging.handlers import RotatingFileHandler
-from os import chdir
-from os.path import join
 
 from flask import Flask
-from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from raven.contrib.flask import Sentry
 
-from app.config import BASEDIR
+from app.config import configuration
+from app.config.values import SENTRY_DSN
 
-sys.path.insert(0, BASEDIR)
-chdir(BASEDIR)
+db = SQLAlchemy()
+sentry = Sentry()
 
-app = Flask(__name__)
 
-app.config.from_object('config')
-# app.jinja_env.add_extension('jinja2.ext.do')
-db = SQLAlchemy(app)
-# login_manager = LoginManager(app)
-migrate = Migrate(app, db)
+def create_app(config_name):
+    app = Flask(__name__)
 
-logger = RotatingFileHandler(join(BASEDIR, 'logs/MrHyde.log'), maxBytes=10000, backupCount=10)
-logger.setLevel(logging.WARNING)
-app.logger.addHandler(logger)
+    app.config.from_object(configuration[config_name])
+    configuration[config_name].init_app(app)
 
-# from app.main import views
-from app.main import models
+    logger = RotatingFileHandler(configuration[config_name].LOG_PATH, maxBytes=10000, backupCount=10)
+    logger.setLevel(configuration[config_name].LOG_LEVEL)
+    app.logger.addHandler(logger)
+
+    db.init_app(app)
+    sentry.init_app(app, dsn=SENTRY_DSN)
+
+    return app

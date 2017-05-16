@@ -4,8 +4,8 @@ from os import getcwd
 from os.path import join
 from subprocess import run, PIPE, CalledProcessError
 
-from app.main.executable.executable_error import ExecutableError
-from app.main.working_directory import working_directory
+from app.executable.executable_error import ExecutableError
+from app.utils.working_directory import working_directory
 
 
 class Executable(object):

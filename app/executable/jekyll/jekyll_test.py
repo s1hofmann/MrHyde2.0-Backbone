@@ -1,7 +1,8 @@
 import unittest
 
 from app.main.executable.executable import Executable
-from app.main.executable.jekyll.jekyll import Jekyll, JekyllError
+
+from app.executable.jekyll import Jekyll, JekyllError
 
 
 class JekyllTest(unittest.TestCase):

@@ -1,4 +1,4 @@
-from app.main.executable.executable_error import ExecutableError
+from app.executable.executable_error import ExecutableError
 
 
 class BundleError(ExecutableError):

@@ -1,7 +1,8 @@
 import unittest
 
-from app.main.executable.bundle.bundle import Bundle
 from app.main.executable.jekyll.jekyll import Jekyll
+
+from app.executable.bundle.bundle import Bundle
 
 
 class BundleTest(unittest.TestCase):

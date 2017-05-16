@@ -5,8 +5,8 @@ from os import listdir
 from os.path import isdir
 from os.path import join
 
-from app import app, db
-from .models import Repo
+from app import db
+from app.database.models import Repo
 
 
 class RepoUtils:

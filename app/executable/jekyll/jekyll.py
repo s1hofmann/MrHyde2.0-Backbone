@@ -1,7 +1,8 @@
 from subprocess import PIPE
 
 from app.main.executable.executable import Executable, ExecutableError
-from app.main.executable.jekyll.jekyll_error import JekyllError
+
+from app.executable.jekyll import JekyllError
 
 
 class Jekyll(Executable):

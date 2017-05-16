@@ -1,5 +1,6 @@
-from app.main.executable.bundle.bundle_error import BundleError
 from app.main.executable.executable import Executable, ExecutableError
+
+from app.executable.bundle.bundle_error import BundleError
 
 
 class Bundle(Executable):
