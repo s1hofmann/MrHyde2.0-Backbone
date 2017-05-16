@@ -1,8 +1,7 @@
 import unittest
 
-from app.main.executable.jekyll.jekyll import Jekyll
-
-from app.executable.bundle.bundle import Bundle
+from app.executable.bundle import Bundle
+from app.executable.jekyll import Jekyll
 
 
 class BundleTest(unittest.TestCase):
@@ -16,8 +15,24 @@ class BundleTest(unittest.TestCase):
         b = Bundle()
         self.assertListEqual(b.install().cmd, ["bundle", "install"])
 
+    def test_install_twice(self):
+        b = Bundle()
+        b.install()
+        self.assertListEqual(b.install().cmd, ["bundle", "install"])
+
+    def test_switch_commands(self):
+        b = Bundle()
+        b.install()
+        self.assertListEqual(b.update().cmd, ["bundle", "update"])
+
+
     def test_update(self):
         b = Bundle()
+        self.assertListEqual(b.update().cmd, ["bundle", "update"])
+
+    def test_update_twice(self):
+        b = Bundle()
+        b.update()
         self.assertListEqual(b.update().cmd, ["bundle", "update"])
 
 

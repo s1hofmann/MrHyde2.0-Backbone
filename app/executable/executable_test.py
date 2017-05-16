@@ -1,8 +1,6 @@
 import unittest
 
-from app.main.executable.executable import Executable
-
-from app.executable.executable_error import ExecutableError
+from app.executable import Executable, ExecutableError
 
 
 class ExecutableTest(unittest.TestCase):

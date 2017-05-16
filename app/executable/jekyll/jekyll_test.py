@@ -1,7 +1,6 @@
 import unittest
 
-from app.main.executable.executable import Executable
-
+from app.executable import Executable
 from app.executable.jekyll import Jekyll, JekyllError
 
 
