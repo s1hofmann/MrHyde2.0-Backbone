@@ -5,6 +5,12 @@ from app.executable.jekyll import Jekyll, JekyllError
 
 
 class JekyllTest(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
     def test_simple(self):
         j = Jekyll()
         self.assertListEqual(j.cmd, ["jekyll", "build"])
@@ -34,7 +40,3 @@ class JekyllTest(unittest.TestCase):
             e.call()
 
         self.assertTrue(context.exception.return_code == 1)
-
-
-if __name__ == "__main__":
-    unittest.main()

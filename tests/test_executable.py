@@ -4,6 +4,12 @@ from app.executable import Executable, ExecutableError
 
 
 class ExecutableTest(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
     def test_single_cmd(self):
         e = Executable("test", "param1", "param2")
         self.assertListEqual(e.cmd, ["test", "param1", "param2"])
@@ -33,7 +39,3 @@ class ExecutableTest(unittest.TestCase):
         jekyll = Executable("jekyll")
         bundle = Executable("bundle", "exec", jekyll)
         self.assertListEqual(bundle.cmd, ["bundle", "exec"] + jekyll.cmd)
-
-
-if __name__ == "__main__":
-    unittest.main()
