@@ -2,7 +2,7 @@ from os import getcwd
 from os.path import join
 from subprocess import run, PIPE, CalledProcessError
 
-from app.utils.working_directory import working_directory
+from app.utils import working_directory
 
 
 class Executable(object):

@@ -1,5 +1,6 @@
 import logging
 
+from .constants import Constants
 from .values import *
 
 
@@ -9,6 +10,11 @@ class Config:
 
     # Development
     DEBUG = False
+
+    BASEDIR = BASEDIR_VALUE
+    APPDIR = APPDIR_VALUE
+    DBDIR = DBDIR_VALUE
+    TEMPLATEDIR = TEMPLATEDIR_VALUE
 
     # database connection
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + join(BASEDIR, 'mr_hyde.db')
@@ -36,6 +42,8 @@ class Config:
     LOG_PATH = join(APPDIR, 'logs/mr_hyde.log')
     LOG_LEVEL = logging.INFO
 
+    GEMFILE = GEMFILE_PATH
+
     @staticmethod
     def init_app(app):
         pass
@@ -43,11 +51,11 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    LOG_PATH = join(BASEDIR, 'logs/debug_hyde.log')
+    LOG_PATH = join(Config.APPDIR, 'logs/debug_hyde.log')
     LOG_LEVEL = logging.DEBUG
 
     # database connection
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + join(BASEDIR, 'debug_hyde.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + join(Config.BASEDIR, 'debug_hyde.db')
     # database migration repo folder
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 

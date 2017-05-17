@@ -9,6 +9,7 @@ from app.config.values import SENTRY_DSN
 
 db = SQLAlchemy()
 sentry = Sentry()
+current_config = configuration['default']
 
 
 def create_app(config_name):
@@ -16,6 +17,7 @@ def create_app(config_name):
 
     app.config.from_object(configuration[config_name])
     configuration[config_name].init_app(app)
+    current_config = configuration[config_name]
 
     logger = RotatingFileHandler(configuration[config_name].LOG_PATH, maxBytes=10000, backupCount=10)
     logger.setLevel(configuration[config_name].LOG_LEVEL)
