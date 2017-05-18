@@ -4,15 +4,15 @@ from app.buildpipeline import BuildPipeline
 from app.config import Constants
 from app.repository import Repository
 from app.utils import RepoUtils, RequestUtils
-from . import main
+from . import jekyll
 
 
-@main.route('/jekyll', methods=['GET'])
+@jekyll.route('/', methods=['GET'])
 def list_all_repositories():
     return redirect(url_for('static', filename='welcome.html'))
 
 
-@main.route('/jekyll', methods=['POST'])
+@jekyll.route('/', methods=['POST'])
 def create_repo():
     request_data = request.get_json()
     if RequestUtils.validate_request(request_data):

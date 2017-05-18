@@ -15,6 +15,7 @@ class Config:
     APPDIR = APPDIR_VALUE
     DBDIR = DBDIR_VALUE
     TEMPLATEDIR = TEMPLATEDIR_VALUE
+    STATICDIR = STATICDIR_VALUE
 
     # database connection
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + join(BASEDIR, 'mr_hyde.db')

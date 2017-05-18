@@ -26,7 +26,8 @@ def create_app(config_name):
     db.init_app(app)
     sentry.init_app(app, dsn=SENTRY_DSN)
 
-    from .main import main as main_blueprint
-    app.register_blueprint(main_blueprint)
+    from .controllers import jekyll, status
+    app.register_blueprint(jekyll, url_prefix='/jekyll')
+    app.register_blueprint(status, url_prefix='/status')
 
     return app
