@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>MrHyde - A Jekyll scratchpad</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
+</head>
+<body>
+{% block content %}{% endblock %}
+<p></p>
+<div align="center"><img src="{{ url_for('static', filename='ic_background.svg') }}" alt="MrHyde logo"></div>
+<p></p>
+<footer style="text-align: center;">&copy; FauDroids 2017</footer>
+</body>
+</html>

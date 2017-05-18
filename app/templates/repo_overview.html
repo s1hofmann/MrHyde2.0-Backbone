@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+    <p><strong>Available repositories:</strong></p>
+    <table>
+        {% for repo in repos %}
+            <tr>
+                <td>{{ repo.id }}</td>
+                <td><a href='{{ repo.url }}'>View on GitHub</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

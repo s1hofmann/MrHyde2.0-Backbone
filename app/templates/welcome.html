@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>MrHyde</title>
-    <link rel="stylesheet" href="layout.css" type="text/css">
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
-</head>
-<body>
+{% extends "layout.html" %}
+{% block content %}
 <div style="text-align: center;">
     <p>
     <h1>Welcome to MrHyde!</h1>
@@ -27,9 +20,4 @@
     <p>Julia Schottenhamml</p>
     <p>Richard Baumann</p>
 </div>
-<p></p>
-<div align="center"><img src="ic_background.svg" alt="MrHyde logo"></div>
-<p></p>
-<footer style="text-align: center;">&copy; FauDroids 2015</footer>
-</body>
-</html>
+{% endblock %}
