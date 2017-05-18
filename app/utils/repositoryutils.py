@@ -1,10 +1,9 @@
-from os import listdir
-from os.path import isdir, join
+from os.path import isdir
 from random import SystemRandom
 from string import ascii_lowercase, digits
 from time import time
 
-from app import db, current_config
+from app import db
 from app.database.models import Repo
 
 
@@ -25,11 +24,11 @@ class RepoUtils:
 
     @staticmethod
     def repository_exists(identifier):
-        if isdir(join(current_config.REPO_PATH, identifier)):
+        repo = Repo.query.filter_by(id=identifier).first()
+        if repo is not None and isdir(repo.path):
             return True
-        else:
-            return False
+        return False
 
     @staticmethod
     def get_current_repo_count():
-        return len(listdir(current_config.REPO_PATH))
+        return len(Repo.query.filter_by(active=True).all())
