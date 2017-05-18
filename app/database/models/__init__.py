@@ -18,4 +18,4 @@ class Repo(db.Model):
         self.active = active
 
     def __repr__(self):
-        return "<Repo: %r>" % self.url
+        return "<ID: %s | URL: %s>" % (self.id, self.url)
