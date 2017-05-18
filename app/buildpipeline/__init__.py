@@ -12,9 +12,17 @@ class BuildPipeline:
         self._gemfile = None
         self._bundle = Bundle()
 
-    def pull(self):
+    def pull(self, diff=None):
+        """
+        Clones and updates a git repository
+        :param diff: Diff file to apply, e.g. patch received in request
+        :return: None
+        """
         self._repo.checkout()
-        self._repo.patch(self._repo.diff)
+        if diff is not None:
+            self._repo.patch(diff)
+        else:
+            self._repo.patch(self._repo.diff)
 
     def prepare(self):
         """
@@ -71,11 +79,19 @@ class BuildPipeline:
             raise BundleError("Corrupt file setup: %s: %s" % (e.strerror, e.filename), self._bundle.return_code())
 
     def run(self):
+        """
+        Combines all pipeline steps into a single method to be run asynchronously
+        :return: None
+        """
         self.pull()
         self.prepare()
         self.build()
 
     def execute(self):
+        """
+        Executes a pipeline for a certain repository by running its 'run' method asynchronously
+        :return: None
+        """
         t = threading.Thread(target=self.run)
         t.daemon = True
         t.start()

@@ -24,6 +24,11 @@ class Repository:
 
     @staticmethod
     def from_request(request_data):
+        """
+        Creates a new repository given data from an incoming request
+        :param request_data: Incoming request data
+        :return: Repository
+        """
         for param in Constants.REQUEST_PARAMS.values():
             if param not in request_data.keys():
                 raise AttributeError('%s parameter missing in request. Aborting.' % param)
@@ -54,6 +59,12 @@ class Repository:
         return self._draft
 
     def init(self):
+        """
+        Performs initialization steps for a local repository
+        -> Generates an unique repo id and assembles path variables, which are then persisted
+        -> Returns repo id and its query url
+        :return: 
+        """
         self._repo_id = RepoUtils.generate_id(current_config.ID_LENGTH)
         self._build_path = join(current_config.REPO_PATH, self._repo_id)
         self._deploy_path = ''.join([current_config.DEPLOY_PATH, self._repo_id, current_config.DEPLOY_PATH_APPEND])
@@ -79,6 +90,10 @@ class Repository:
         return self._repo_id, ''.join(['https://', self._repo_id, '.', current_config.URL, '/progress.html'])
 
     def checkout(self):
+        """
+        Clones a repository from its given git URL
+        :return: None
+        """
         try:
             gitter = git.Git()
             gitter.clone(self._url, self._build_path)
@@ -88,6 +103,11 @@ class Repository:
             raise RepositoryError("Failed to patch repository %s. Reason: %s" % (self._build_path, e.strerror))
 
     def patch(self, diff):
+        """
+        Applies a diff to a cloned repository
+        :param diff: Diff to apply, e.g. the patch received from a request
+        :return: None
+        """
         if diff is not None and len(diff):
             with working_directory(self._build_path):
                 try:
