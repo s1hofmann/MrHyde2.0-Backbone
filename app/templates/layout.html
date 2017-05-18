@@ -1,16 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>MrHyde - A Jekyll scratchpad</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}" type="text/css">
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
-</head>
-<body>
-{% block content %}{% endblock %}
-<p></p>
-<div align="center"><img src="{{ url_for('static', filename='ic_background.svg') }}" alt="MrHyde logo"></div>
-<p></p>
-<footer style="text-align: center;">&copy; FauDroids 2017</footer>
-</body>
-</html>
+{% extends 'bootstrap/base.html' %}
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block favicon %}
+{% endblock %}
+
+{% block feed %}
+{% endblock %}
+
+{% block title %}
+    MrHyde - A Jekyll scratchpad
+{% endblock %}
+
+{% block content %}
+    {% include "flash.html" %}
+    {% block main_body %}{% endblock %}
+    {% include "footer.html" %}
+{% endblock %}

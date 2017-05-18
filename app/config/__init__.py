@@ -1,12 +1,12 @@
 import logging
 
-from .constants import Constants
 from .values import *
 
 
 class Config:
     # Prevent cross site request forgerie
     WTF_CSRF_ENABLED = True
+    SECRET_KEY = SECRET_VALUE
 
     # Development
     DEBUG = False

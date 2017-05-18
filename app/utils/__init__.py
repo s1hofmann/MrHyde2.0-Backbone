@@ -1,9 +1,6 @@
 from contextlib import contextmanager
 from os import getcwd, chdir
 
-from .repositoryutils import RepoUtils
-from .requestutils import RequestUtils
-
 
 @contextmanager
 def working_directory(path):

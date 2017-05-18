@@ -1,15 +1,29 @@
-from flask import redirect, url_for, abort, request, jsonify
+from flask import abort, request, jsonify, render_template, current_app
 
 from app.buildpipeline import BuildPipeline
 from app.config import Constants
+from app.database.models import Repo
 from app.repository import Repository
-from app.utils import RepoUtils, RequestUtils
+from app.utils import RepoUtils, RequestUtils, flash_and_redirect_to_index
 from . import jekyll
 
 
 @jekyll.route('/', methods=['GET'])
-def list_all_repositories():
-    return redirect(url_for('static', filename='welcome.html'))
+def welcome():
+    return render_template('welcome.html')
+
+
+@jekyll.route('/list', methods=['GET'])
+def list_all_repos():
+    if current_app.debug:
+        repos = Repo.query.all()
+        return render_template('repo_overview.html', repos=repos)
+    return flash_and_redirect_to_index('Endpoint \'/jekyll/list\' only available in debug mode.', 'error')
+
+
+@jekyll.route('/heartbeat', methods=['GET'])
+def heartbeat():
+    return ""
 
 
 @jekyll.route('/', methods=['POST'])
