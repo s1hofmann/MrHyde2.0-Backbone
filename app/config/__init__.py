@@ -42,8 +42,6 @@ class Config:
     LOG_PATH = join(APPDIR, 'logs/mr_hyde.log')
     LOG_LEVEL = logging.INFO
 
-    GEMFILE = GEMFILE_PATH
-
     @staticmethod
     def init_app(app):
         pass

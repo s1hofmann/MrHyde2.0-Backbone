@@ -1,38 +1,45 @@
-from subprocess import PIPE
+from os import getcwd
+from shutil import copy2
 
 from .. import Executable, ExecutableError
 
 
 class Bundle(Executable):
-    def __init__(self, *args, path=None, pwd=None, stdout=PIPE, stderr=PIPE):
-        super().__init__('bundle', *args, path=path, pwd=pwd, stdout=stdout, stderr=stderr)
+    def __init__(self, *args, path=None, stdout=None, stderr=None):
+        super().__init__('bundle', *args, path=path, stdout=stdout, stderr=stderr)
+        self._gemfile = None
 
     def exec(self, executable, gemfile=None):
         super().clear_cache()
         super().add_parameter('exec')
-        if gemfile is not None:
-            super().add_parameter("--gemfile=%s" % gemfile)
         super().add_parameter(executable)
+        self._gemfile = gemfile
         return self
 
     def install(self, gemfile=None):
         super().clear_cache()
         super().add_parameter('install')
-        if gemfile is not None:
-            super().add_parameter("--gemfile=%s" % gemfile)
+        self._gemfile = gemfile
         return self
 
     def update(self, gemfile=None):
         super().clear_cache()
         super().add_parameter('update')
-        if gemfile is not None:
-            super().add_parameter("--gemfile=%s" % gemfile)
+        self._gemfile = gemfile
         return self
 
-    def call(self):
+    def call(self, pwd=None):
+        if self._gemfile is not None:
+            try:
+                if pwd is None:
+                    copy2(self._gemfile, getcwd())
+                else:
+                    copy2(self._gemfile, pwd)
+            except IOError as e:
+                raise BundleError(e.strerror + ": " + e.filename, self.return_code())
         if len(super().cmd) > 1:
             try:
-                super().call()
+                super().call(pwd=pwd)
             except ExecutableError as e:
                 raise BundleError(e.msg, e.return_code)
         return self

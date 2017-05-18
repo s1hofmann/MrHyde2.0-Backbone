@@ -8,17 +8,19 @@ from app.utils import working_directory
 class Executable(object):
     """Wraps an executable and provides an abstraction layer to handle program errors."""
 
-    def __init__(self, name, *args, path=None, pwd=None, stdout=None, stderr=None):
+    def __init__(self, name, *args, path=None, stdout=None, stderr=None):
         self._result = None
         self._name = name
         self._path = path
-        if pwd is not None:
-            self._pwd = pwd
-        else:
-            self._pwd = getcwd()
         self._arguments = []
-        self._stdout = stdout
-        self._stderr = stderr
+        if stdout is not None:
+            self._stdout = stdout
+        else:
+            self._stdout = PIPE
+        if stderr is not None:
+            self._stderr = stderr
+        else:
+            self._stderr = PIPE
         for arg in args:
             if isinstance(arg, Executable):
                 for sub_arg in arg.cmd:
@@ -45,20 +47,16 @@ class Executable(object):
         [executable.append(arg) for arg in self._arguments]
         return executable
 
-    def call(self):
+    def call(self, pwd=None):
         command = self.cmd
+        if pwd is not None:
+            working_dir = pwd
+        else:
+            working_dir = getcwd()
         if len(command) > 0:
-            with working_directory(self._pwd):
+            with working_directory(working_dir):
                 try:
-                    if self._stdout is not None and self._stderr is not None:
-                        self._result = run(self.cmd, stdout=self._stdout, stderr=self._stderr, encoding='utf-8',
-                                           check=True)
-                    elif self._stdout is not None:
-                        self._result = run(self.cmd, stdout=self._stdout, stderr=PIPE, encoding='utf-8', check=True)
-                    elif self._stderr is not None:
-                        self._result = run(self.cmd, stdout=PIPE, stderr=self._stderr, encoding='utf-8', check=True)
-                    else:
-                        self._result = run(self.cmd, stdout=PIPE, stderr=PIPE, encoding='utf-8', check=True)
+                    self._result = run(self.cmd, stdout=self._stdout, stderr=self._stderr, encoding='utf-8', check=True)
                 except CalledProcessError as cp:
                     raise ExecutableError(self.cmd[0], cp.stdout, cp.returncode)
                 except FileNotFoundError as fnf:
@@ -80,7 +78,7 @@ class Executable(object):
     def return_code(self):
         if self._result is not None:
             return self._result.returncode
-        return self._result
+        return -1
 
 
 class ExecutableError(Exception):
