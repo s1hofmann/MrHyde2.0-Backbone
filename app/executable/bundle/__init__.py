@@ -1,7 +1,7 @@
 from os import getcwd
 from shutil import copy2
 
-from .. import Executable, ExecutableError
+from app.executable import Executable, ExecutableError
 
 
 class Bundle(Executable):

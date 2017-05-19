@@ -1,4 +1,4 @@
-from .. import Executable, ExecutableError
+from app.executable import Executable, ExecutableError
 
 
 class Jekyll(Executable):
