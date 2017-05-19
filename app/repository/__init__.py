@@ -55,6 +55,10 @@ class Repository:
         return self._repo_diff
 
     @property
+    def static_files(self):
+        return self._static_files
+
+    @property
     def draft(self):
         return self._draft
 
@@ -81,13 +85,13 @@ class Repository:
         try:
             db.session.add(repo_dao)
             db.session.commit()
+            copytree(join(current_config.TEMPLATEDIR, 'redirect'), self._deploy_path)
         except DatabaseError as dbe:
             raise RepositoryError("Unable to communicate with database. Reason: %s" % dbe.__str__())
-        try:
-            copytree(join(current_config.TEMPLATEDIR, 'redirect'), self._deploy_path)
         except OSError as e:
             raise RepositoryError("Unable to dispatch redirector files. Reason: %s" % e.strerror)
-        return self._repo_id, ''.join(['https://', self._repo_id, '.', current_config.URL, '/progress.html'])
+        finally:
+            return self._repo_id, ''.join(['https://', self._repo_id, '.', current_config.URL, '/progress.html'])
 
     def checkout(self):
         """
