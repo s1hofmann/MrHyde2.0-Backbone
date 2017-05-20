@@ -49,19 +49,7 @@ class Config:
         pass
 
 
-class DevelopmentConfig(Config):
-    DEBUG = True
-    LOG_PATH = join(Config.APPDIR, 'logs/debug_hyde.log')
-    LOG_LEVEL = logging.DEBUG
-
-    # database connection
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + join(Config.BASEDIR, 'debug_hyde.db')
-    # database migration repo folder
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-
 configuration = {
-    'development': DevelopmentConfig,
     'production': Config,
 
     'default': Config
