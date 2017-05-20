@@ -1,4 +1,5 @@
 from logging.handlers import RotatingFileHandler
+import logging
 
 from flask import Flask
 from flask_bootstrap import Bootstrap
@@ -19,9 +20,13 @@ bootstrap.init_app(app)
 app.config.from_object(current_config)
 current_config.init_app(app)
 
-logger = RotatingFileHandler(current_config.LOG_PATH, maxBytes=10000, backupCount=10)
-logger.setLevel(current_config.LOG_LEVEL)
-app.logger.addHandler(logger)
+log_handler = RotatingFileHandler(current_config.LOG_PATH, maxBytes=10000, backupCount=10)
+log_handler.setLevel(current_config.LOG_LEVEL)
+app.logger.addHandler(log_handler)
+
+util_logger = logging.getLogger("util")
+util_logger.setLevel(current_config.LOG_LEVEL)
+util_logger.addHandler(log_handler)
 
 db.init_app(app)
 sentry.init_app(app, dsn=SENTRY_DSN)

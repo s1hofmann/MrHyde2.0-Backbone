@@ -113,15 +113,15 @@ class Repository:
         :return: None
         """
         if diff is not None and len(diff):
-            with working_directory(self._build_path):
-                try:
+            try:
+                with working_directory(self._build_path):
                     gitter = git.Git()
                     diff_file = create_diff_file(self._repo_id, diff)
                     gitter.apply(diff_file)
-                except git.GitCommandError as e:
-                    raise RepositoryError("Failed to patch repository %s. Reason: %s" % (self._build_path, e.__str__()))
-                except OSError as e:
-                    raise RepositoryError("Failed to patch repository %s. Reason: %s" % (self._build_path, e.strerror))
+            except git.GitCommandError as e:
+                raise RepositoryError("Failed to patch repository %s. Reason: %s" % (self._build_path, e.__str__()))
+            except OSError as e:
+                raise RepositoryError("Failed to patch repository %s. Reason: %s" % (self._build_path, e.strerror))
 
 
 class RepositoryError(Exception):

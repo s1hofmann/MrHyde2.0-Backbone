@@ -42,7 +42,7 @@ class Config:
     MAX_LIFETIME = MAX_LIFETIME_VALUE
 
     LOG_PATH = join(APPDIR, 'logs/mr_hyde.log')
-    LOG_LEVEL = logging.INFO
+    LOG_LEVEL = logging.DEBUG
 
     @staticmethod
     def init_app(app):
