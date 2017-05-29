@@ -20,8 +20,14 @@ bootstrap.init_app(app)
 app.config.from_object(current_config)
 current_config.init_app(app)
 
+if app.debug:
+    log_formatter = logging.Formatter(
+        '[%(asctime)s] %(levelname)s in method %(funcName)s, line %(lineno)s: %(msg)s\nFile: %(pathname)s')
+else:
+    log_formatter = logging.Formatter('[%(asctime)s] %(levelname)s in method %(funcName)s, line %(lineno)s: %(msg)s')
 log_handler = RotatingFileHandler(current_config.LOG_PATH, maxBytes=10000, backupCount=10)
 log_handler.setLevel(current_config.LOG_LEVEL)
+log_handler.setFormatter(log_formatter)
 app.logger.addHandler(log_handler)
 
 util_logger = logging.getLogger("util")
