@@ -1,16 +1,19 @@
 from os.path import isdir
+from os.path import isdir
 from random import SystemRandom
+from shutil import rmtree
 from string import ascii_lowercase, digits
 from time import time
 
-from app import db
+from app import db, current_config
+from app import util_logger as logger
 from app.database.models import Repo
 
 
 class RepoUtils:
     @staticmethod
     def update_timestamp(identifier):
-        repo = Repo.query.filter_by(id=identifier).update(dict(last_used='%s' % int(time())))
+        Repo.query.filter_by(id=identifier).update(dict(last_used='%s' % int(time())))
         db.session.commit()
 
     @staticmethod
@@ -30,5 +33,26 @@ class RepoUtils:
         return False
 
     @staticmethod
-    def get_current_repo_count():
-        return len(Repo.query.filter_by(active=True).all())
+    def get_repo_count(active=None):
+        if active is not None:
+            return len(Repo.query.filter_by(active=active).all())
+        else:
+            return len(Repo.query.all())
+
+    @staticmethod
+    def clean_repositories():
+        timestamp = int(time() - float(current_config.MAX_LIFETIME))
+        repos = Repo.query.filter(Repo.last_used < timestamp).filter(Repo.active)
+        cleaned = 0
+        for repo in repos:
+            if repo is not None and isdir(repo.path):
+                try:
+                    rmtree(repo.deploy_path)
+                    cleaned += 1
+                except OSError as exception:
+                    logger.error(exception.strerror)
+                finally:
+                    repo.active = False
+                    db.session.commit()
+
+        return cleaned

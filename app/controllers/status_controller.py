@@ -18,3 +18,13 @@ def poll_status(repo_id):
         if len(content):
             return jsonify(loads(content[0]))
     return jsonify(msg="Build failed! :(", status=0)
+
+
+@status.route('/clean', methods=['GET'])
+def cleanup():
+    return jsonify(removed=RepoUtils.clean_repositories())
+
+
+@status.route('/stats', methods=['GET'])
+def stats():
+    return jsonify(active=RepoUtils.get_repo_count(True), inactive=RepoUtils.get_repo_count(False))
