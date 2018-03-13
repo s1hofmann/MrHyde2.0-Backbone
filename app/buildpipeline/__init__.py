@@ -1,3 +1,3 @@
-from buildpipeline import *
+from app.buildpipeline.buildpipeline import *
 
 __all__ = ['BuildPipeline']

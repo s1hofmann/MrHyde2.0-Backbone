@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-
-import os
+#!./venv/bin/python3
 
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager, Shell

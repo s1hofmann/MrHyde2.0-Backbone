@@ -1,9 +1,9 @@
 from contextlib import contextmanager
 from os import getcwd, chdir
 
-from repositoryutils import *
-from requestutils import *
-from urlutils import *
+from app.utils.repositoryutils import *
+from app.utils.requestutils import *
+from app.utils.urlutils import *
 
 __all__ = ['working_directory', 'authenticate', 'RepoUtils', 'flash_and_redirect_to_index']
 

@@ -1,6 +1,6 @@
 import threading
 from json import dumps
-from os.path import join
+import os.path
 
 from app import current_config
 from app import util_logger as logger
@@ -14,7 +14,7 @@ class BuildPipeline:
     def __init__(self, repository):
         self._repo = repository
         self._gemfile = None
-        with open(join(self._repo.deploy_path, 'status.txt'), 'w') as log_file:
+        with open(os.path.join(self._repo.deploy_path, 'status.txt'), 'w') as log_file:
             log_file.write(dumps({"status": 1, "msg": 'Initializing repo ...'}))
 
     def pull(self, diff=None):
@@ -27,7 +27,7 @@ class BuildPipeline:
             if current_config.DEBUG:
                 logger.debug("Checking out repository.")
             self._repo.checkout()
-            with open(join(self._repo.deploy_path, 'status.txt'), 'w') as log_file:
+            with open(os.path.join(self._repo.deploy_path, 'status.txt'), 'w') as log_file:
                 log_file.write(dumps({"status": 1, "msg": 'Initialized repo ...'}))
             if diff is not None:
                 if current_config.DEBUG:
@@ -35,7 +35,7 @@ class BuildPipeline:
                 self._repo.patch(diff)
             else:
                 self._repo.patch(self._repo.diff)
-            with open(join(self._repo.deploy_path, 'status.txt'), 'w') as log_file:
+            with open(os.path.join(self._repo.deploy_path, 'status.txt'), 'w') as log_file:
                 log_file.write(dumps({"status": 1, "msg": 'Fetched updates ...'}))
         except RepositoryError as e:
             logger.error(e.__str__())
@@ -53,21 +53,21 @@ class BuildPipeline:
         """
         bundler = Bundle()
         try:
-            with open(join(self._repo.deploy_path, 'status.txt'), 'w') as log_file:
+            with open(os.path.join(self._repo.deploy_path, 'status.txt'), 'w') as log_file:
                 log_file.write(dumps({"status": 1, "msg": 'Installing dependencies ...\nThis might take a bit ...'}))
             if current_config.DEBUG:
                 logger.debug("Installing dependencies.")
             bundler.install(gemfile=self._gemfile).call(pwd=self._repo.build_path)
-            with open(join(self._repo.deploy_path, 'status.txt'), 'w') as log_file:
+            with open(os.path.join(self._repo.deploy_path, 'status.txt'), 'w') as log_file:
                 log_file.write(dumps({"status": 1, "msg": 'Installed dependencies!'}))
         except BundleError as be:
             if be.return_code == 10:
                 # Switch to using Gemfile template when no Gemfile is present in repo
                 if current_config.DEBUG:
                     logger.debug("Switching to default Gemfile.")
-                self._gemfile = join(current_config.TEMPLATEDIR, 'Gemfile')
+                self._gemfile = os.path.join(current_config.TEMPLATEDIR, 'Gemfile')
                 bundler.install(gemfile=self._gemfile).call()
-                with open(join(self._repo.deploy_path, 'status.txt'), 'w') as log_file:
+                with open(os.path.join(self._repo.deploy_path, 'status.txt'), 'w') as log_file:
                     log_file.write(dumps({"status": 1, "msg": 'Installed dependencies!'}))
             else:
                 raise
@@ -87,18 +87,18 @@ class BuildPipeline:
         try:
             if current_config.DEBUG:
                 logger.debug("Starting Jekyll build.")
-            with open(join(self._repo.deploy_path, 'status.txt'), 'w') as log_file:
+            with open(os.path.join(self._repo.deploy_path, 'status.txt'), 'w') as log_file:
                 log_file.write(dumps({"status": 0, "msg": 'Starting build ...'}))
             jekyll = Jekyll(source=self._repo.build_path,
                             dest=self._repo.deploy_path,
                             config=[
-                                join(self._repo.build_path, '_config.yml'),
-                                join(current_config.TEMPLATEDIR, 'keep_files.yml')
+                                os.path.join(self._repo.build_path, '_config.yml'),
+                                os.path.join(current_config.TEMPLATEDIR, 'keep_files.yml')
                             ],
                             draft=self._repo.draft)
 
-            bundler.exec(jekyll, gemfile=self._gemfile).call(pwd=self._repo.build_path)
-            with open(join(self._repo.deploy_path, 'status.txt'), 'w') as log_file:
+            bundler.exec(executable=jekyll, gemfile=self._gemfile).call(pwd=self._repo.build_path)
+            with open(os.path.join(self._repo.deploy_path, 'status.txt'), 'w') as log_file:
                 log_file.write(dumps({"status": 0, "msg": 'Deployed page!'}))
         except BundleError:
             raise
@@ -125,7 +125,7 @@ class BuildPipeline:
         except RepositoryError or BundleError or OSError:
             deploy_error_page(self._repo.deploy_path)
         finally:
-            with open(join(self._repo.deploy_path, 'status.txt'), 'w') as log_file:
+            with open(os.path.join(self._repo.deploy_path, 'status.txt'), 'w') as log_file:
                 log_file.write(dumps({"status": 0, "msg": 'Build failed!'}))
 
     def execute(self):

@@ -1,4 +1,4 @@
-from config import *
-from constants import *
+from app.config.config import *
+from app.config.constants import *
 
-__all__ = ['Config', 'Constants']
+__all__ = ['configuration', 'Config', 'Constants']

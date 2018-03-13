@@ -11,11 +11,11 @@ from app.database.models import Repo
 
 class RepoUtils:
     @staticmethod
-    def calc_expiration_date(last_used: int) -> int:
+    def calc_expiration_date(last_used):
         return last_used + (24 * 3600)
 
     @staticmethod
-    def update_timestamp(identifier: str):
+    def update_timestamp(identifier):
         logger.info("Updating timestamp for repo '%s'" % identifier)
         new_timestamp = int(time())
         Repo.query.filter_by(id=identifier).update(dict(last_used='%s' % new_timestamp))
@@ -23,25 +23,25 @@ class RepoUtils:
         logger.info("Updated timestamp for repo '%s', new timestamp: %s" % (identifier, new_timestamp))
 
     @staticmethod
-    def get_expiration_date(identifier: str) -> int:
+    def get_expiration_date(identifier):
         repo = Repo.query.filter_by(id=identifier).first()
         expiry = RepoUtils.calc_expiration_date(repo.last_used)
         logger.info("Repo '%s' will expire at %s" % (identifier, expiry))
         return expiry
 
     @staticmethod
-    def generate_id(length: int = 16, chars: str = ascii_lowercase + digits):
+    def generate_id(length=16, chars=ascii_lowercase + digits):
         return ''.join(SystemRandom().choice(chars) for _ in range(length))
 
     @staticmethod
-    def repository_exists(identifier: str) -> bool:
+    def repository_exists(identifier):
         repo = Repo.query.filter_by(id=identifier).first()
         if repo is not None and isdir(repo.path):
             return True
         return False
 
     @staticmethod
-    def get_repo_count(active: bool = None) -> int:
+    def get_repo_count(active=None):
         if active is not None:
             return len(Repo.query.filter_by(active=active).all())
         else:

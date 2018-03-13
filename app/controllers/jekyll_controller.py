@@ -5,7 +5,7 @@ from app.config import Constants
 from app.database.models import Repo
 from app.repository import Repository, RepositoryError
 from app.utils import RepoUtils, flash_and_redirect_to_index, authenticate
-from filehandling import deploy_error_page
+from app.filehandling import deploy_error_page
 from . import jekyll
 
 
