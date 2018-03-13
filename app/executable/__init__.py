@@ -1,3 +1,3 @@
 from executable import *
 
-__all__ = [Executable, ExecutableError]
+__all__ = ['Executable', 'ExecutableError']

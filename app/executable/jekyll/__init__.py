@@ -1,3 +1,3 @@
 from jekyll.jekyll import *
 
-__all__ = [Jekyll, JekyllError]
+__all__ = ['Jekyll', 'JekyllError']

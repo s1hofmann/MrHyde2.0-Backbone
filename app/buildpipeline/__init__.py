@@ -1,3 +1,3 @@
 from buildpipeline import *
 
-__all__ = [BuildPipeline]
+__all__ = ['BuildPipeline']

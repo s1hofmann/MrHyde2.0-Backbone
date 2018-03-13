@@ -1,3 +1,3 @@
 from repository import *
 
-__all__ = [Repository, RepositoryError]
+__all__ = ['Repository', 'RepositoryError']

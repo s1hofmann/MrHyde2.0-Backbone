@@ -1,3 +1,3 @@
 from bundle.bundle import *
 
-__all__ = [Bundle, BundleError]
+__all__ = ['Bundle', 'BundleError']
