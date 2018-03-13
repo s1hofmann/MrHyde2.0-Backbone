@@ -1,11 +1,10 @@
 from os.path import isdir
-from os.path import isdir
 from random import SystemRandom
 from shutil import rmtree
 from string import ascii_lowercase, digits
 from time import time
 
-from app import db, current_config
+from app import db
 from app import util_logger as logger
 from app.database.models import Repo
 
@@ -33,16 +32,14 @@ class RepoUtils:
         return False
 
     @staticmethod
-    def get_repo_count(active=None):
+    def get_repo_count(active: bool = None) -> int:
         if active is not None:
             return len(Repo.query.filter_by(active=active).all())
         else:
             return len(Repo.query.all())
 
     @staticmethod
-    def clean_repositories():
-        timestamp = int(time() - float(current_config.MAX_LIFETIME))
-        repos = Repo.query.filter(Repo.last_used < timestamp).filter(Repo.active)
+    def clean_repositories(repos):
         cleaned = 0
         for repo in repos:
             if repo is not None and isdir(repo.path):

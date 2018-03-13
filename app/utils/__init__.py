@@ -1,9 +1,9 @@
 from contextlib import contextmanager
 from os import getcwd, chdir
 
-from app.utils.requestutils import authenticate
-from app.utils.repositoryutils import RepoUtils
-from app.utils.urlutils import flash_and_redirect_to_index
+from .repositoryutils import *
+from .requestutils import *
+from .urlutils import *
 
 
 @contextmanager

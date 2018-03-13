@@ -142,3 +142,7 @@ ENV/
 .idea/
 app/config/values.py
 config.py
+/app/logs/*
+/mr_hyde.db
+/Gemfile
+/Gemfile.lock
