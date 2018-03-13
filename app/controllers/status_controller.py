@@ -20,9 +20,16 @@ def poll_status(repo_id):
     return jsonify(msg="Build failed! :(", status=0)
 
 
+@status.route('/expire', methods=['GET'])
+def expire():
+    expired = RepoUtils.get_expired_repos()
+    RepoUtils.deactivate_expired_repos(expired)
+    return jsonify(expired=len(expired))
+
+
 @status.route('/clean', methods=['GET'])
 def cleanup():
-    return jsonify(removed=RepoUtils.clean_repositories())
+    return jsonify(removed=RepoUtils.clean_repositories(RepoUtils.get_inactive_repos()))
 
 
 @status.route('/stats', methods=['GET'])
