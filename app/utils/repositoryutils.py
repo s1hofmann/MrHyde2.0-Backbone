@@ -56,7 +56,7 @@ class RepoUtils:
         return Repo.query.filter(RepoUtils.calc_expiration_date(Repo.last_used) < int(time())).all()
 
     @staticmethod
-    def deactivate_expired_repos(repos: Repo):
+    def deactivate_expired_repos(repos):
         for repo in repos:
             repo.active = False
             db.session.commit()
