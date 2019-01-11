@@ -15,7 +15,7 @@ def authenticate(incoming):
                 return incoming(*args, **kwargs)
             current_app.logger.info("Invalid authentication request: Invalid client secret.")
             return abort(403, "Failed to authenticate.")
-        current_app.logger.info("Invalid authentication request: Missing client request.")
+        current_app.logger.info("Invalid authentication request: Missing client secret in request.")
         return abort(403, "Failed to authenticate.")
 
     return auth
