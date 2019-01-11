@@ -39,4 +39,4 @@ class JekyllTest(unittest.TestCase):
         with self.assertRaises(JekyllError) as context:
             e.call()
 
-        self.assertTrue(context.exception.return_code == 1)
+        self.assertTrue(context.exception.return_code == -1)
